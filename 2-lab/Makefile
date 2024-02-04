@@ -1,7 +1,6 @@
 TARGET = bin/BMP-Reader
 CC = gcc
 CFLAGS = -Wall -Wextra
-LIBS =
 
 SRC = ./src/
 OBJ = ./obj/
