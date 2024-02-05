@@ -3,22 +3,35 @@
 
 #include "bmp_writer.h"
 
-void WriteBmpRowByRow(FILE* fp, BMP_File* pBmpFile)
-{
-	// Запись данных пикселей
-	int rowSize = pBmpFile->m_dibHeader.m_width * pBmpFile->m_dibHeader.m_bitsPerPixel / 8;
-	int rowPadding = (4 - (rowSize % 4)) % 4;
-	unsigned char* row = (unsigned char*)malloc(rowSize + rowPadding);
-	unsigned char* p = pBmpFile->m_pData + (pBmpFile->m_dibHeader.m_height - 1) * rowSize;
+void SwapRGB(unsigned char* data, int size, int bytesPerPixel) {
+    for (int i = 0; i < size; i += bytesPerPixel) {
+        unsigned char temp = data[i];
+        data[i] = data[i + 2];
+        data[i + 2] = temp;
+    }
+}
 
-	for (int rowWritten = 0; rowWritten < pBmpFile->m_dibHeader.m_height; rowWritten++)
-	{
-		memcpy(row, p, rowSize);
-		fwrite(row, rowSize + rowPadding, 1, fp);
-		p -= rowSize;
-	}
+void WriteBmpRowByRow(FILE* fp, BMP_File* pBmpFile) {
+    // Запись данных пикселей
+    int rowSize = pBmpFile->m_dibHeader.m_width * pBmpFile->m_dibHeader.m_bitsPerPixel / 8;
+    int rowPadding = (4 - (rowSize % 4)) % 4;
+    unsigned char* row = (unsigned char*)malloc(rowSize + rowPadding);
+    unsigned char* p = pBmpFile->m_pData + (pBmpFile->m_dibHeader.m_height - 1) * rowSize;
 
-	free(row);
+    for (int rowWritten = 0; rowWritten < pBmpFile->m_dibHeader.m_height; rowWritten++) {
+        memcpy(row, p, rowSize);
+
+		if (pBmpFile->m_dibHeader.m_colorsCount == 0 && pBmpFile->m_dibHeader.m_impColorsCount == 0)
+		{
+			// Переключаем порядок RGB
+			SwapRGB(row, rowSize, pBmpFile->m_dibHeader.m_bitsPerPixel / 8);
+		}
+
+        fwrite(row, rowSize + rowPadding, 1, fp);
+        p -= rowSize;
+    }
+
+    free(row);
 }
 
 void SaveBmpFile(char* pFileName, BMP_File* pBmpFile)
@@ -55,7 +68,7 @@ void TurnIntoBlackWhite(BMP_File* pBmpFile)
 		int dataSize = (pBmpFile->m_bmpHeader.m_pixelOffset - sizeof(pBmpFile->m_bmpHeader) - sizeof(pBmpFile->m_dibHeader)) / 4;
 		for(int i = 0; i < dataSize; i++)
 		{
-			avgValue = (pBmpFile->m_palette[i][0] + pBmpFile->m_palette[i][1] + pBmpFile->m_palette[i][2]) / 3;
+			avgValue += (pBmpFile->m_palette[i][0] + pBmpFile->m_palette[i][1] + pBmpFile->m_palette[i][2]) / 3;
 			for (int j = 0; j < 3; j++)
 			{
 				pBmpFile->m_palette[i][j] = avgValue;
