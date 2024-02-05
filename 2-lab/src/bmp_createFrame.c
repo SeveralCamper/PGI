@@ -21,6 +21,13 @@ void AddRandomBorder(BMP_File* pBmpFile)
 		{
 			int offset = i * rowSize + j * pBmpFile->m_dibHeader.m_bitsPerPixel / 8;
 
+			if (pBmpFile->m_dibHeader.m_colorsCount != 0 && pBmpFile->m_dibHeader.m_impColorsCount != 0)
+			{
+				unsigned char tmp = pBmpFile->m_pData[offset];
+				pBmpFile->m_pData[offset] = pBmpFile->m_pData[offset + 2];
+				pBmpFile->m_pData[offset + 2] = tmp;
+			}
+
 			if (j < 15 || j >= pBmpFile->m_dibHeader.m_width - 15 || i < 15 || i >= pBmpFile->m_dibHeader.m_height - 15)
 			{
 				for (int k = 0; k < pBmpFile->m_dibHeader.m_bitsPerPixel / 8; k++)

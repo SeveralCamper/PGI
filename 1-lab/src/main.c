@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../../lib/bmp_reader.h"
-#include "../../lib/bmp_writer.h"
+#include "bmp_reader.h"
+#include "bmp_writer.h"
 
 // потерять цветность - усреднить пармметры RGB
 // оставить яркость - сумма RGB - такаяже

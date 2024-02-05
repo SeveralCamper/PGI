@@ -1,6 +1,7 @@
 TARGET = bin/BMP-Reader
 CC = gcc
 CFLAGS = -Wall -Wextra
+LIBS = `sdl2-config --cflags --libs` -lGL
 
 SRC = ./src/
 OBJ = ./obj/
@@ -9,7 +10,7 @@ SRCS = $(wildcard $(SRC)*.c)
 OBJS = $(patsubst $(SRC)%.c, $(OBJ)%.o, $(SRCS))
 
 $(TARGET):$(OBJS)
-	$(CC) $(OBJS) -o $(TARGET) $(LIBS)
+	$(CC) $(OBJS) $(LIBS) -o $(TARGET)
 
 $(OBJ)%.o: $(SRC)%.c
 	$(CC) $(CFLAGS) -c $< -o $@

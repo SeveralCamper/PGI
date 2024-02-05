@@ -55,7 +55,7 @@ void TurnIntoBlackWhite(BMP_File* pBmpFile)
 		int dataSize = (pBmpFile->m_bmpHeader.m_pixelOffset - sizeof(pBmpFile->m_bmpHeader) - sizeof(pBmpFile->m_dibHeader)) / 4;
 		for(int i = 0; i < dataSize; i++)
 		{
-			avgValue += (pBmpFile->m_palette[i][0] + pBmpFile->m_palette[i][1] + pBmpFile->m_palette[i][2]) / 3;
+			avgValue = (pBmpFile->m_palette[i][0] + pBmpFile->m_palette[i][1] + pBmpFile->m_palette[i][2]) / 3;
 			for (int j = 0; j < 3; j++)
 			{
 				pBmpFile->m_palette[i][j] = avgValue;
