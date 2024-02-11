@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
 	if (argc < 3)
 	{
-		printf("ERROR: bmpreader <bmp_file>\n");
+		printf("ERROR: bmpreader <bmp_file> <logo_file>\n");
 		return 0;
 	}
 

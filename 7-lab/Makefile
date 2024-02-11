@@ -16,7 +16,7 @@ $(OBJ)%.o: $(SRC)%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run: $(TARGET)
-	./$(TARGET) images/BigCarib.bmp images/cit.bmp
+	./$(TARGET) images/BigCarib.bmp
 
 clean:
 	rm $(TARGET) $(OBJ)*.o

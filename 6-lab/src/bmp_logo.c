@@ -41,16 +41,16 @@ void OverlayLogoToBmp(BMP_File* originalBmp, BMP_File* logoBmp, float transparen
             int resultIndex = (resultY * originalBmp->m_dibHeader.m_width + resultX) * 3;
             int logoIndex = (y * logoBmp->m_dibHeader.m_width + x) * 3;
 
-			if (logoBmp->m_pData[logoIndex] != 255 && logoBmp->m_pData[logoIndex + 1] && logoBmp->m_pData[logoIndex + 2]) {
+			if (logoBmp->m_pData[logoIndex] != 0 && logoBmp->m_pData[logoIndex + 1] != 255 && logoBmp->m_pData[logoIndex + 2] != 0) {
 				// Копируем цвета с учетом полупрозрачности
-				originalBmp->m_pData[resultIndex] = (unsigned char)(originalBmp->m_pData[resultIndex] * transparencyCoefficient +
-																	logoBmp->m_pData[logoIndex] * (1 - transparencyCoefficient));
+				originalBmp->m_pData[resultIndex] = (unsigned char)(logoBmp->m_pData[logoIndex] * transparencyCoefficient +
+																	originalBmp->m_pData[resultIndex]  * (1 - transparencyCoefficient));
 
-				originalBmp->m_pData[resultIndex + 1] = (unsigned char)(originalBmp->m_pData[resultIndex + 1] * transparencyCoefficient +
-																		logoBmp->m_pData[logoIndex + 1] * (1 - transparencyCoefficient));
+				originalBmp->m_pData[resultIndex + 1] = (unsigned char)(logoBmp->m_pData[logoIndex + 1] * transparencyCoefficient +
+																		originalBmp->m_pData[resultIndex + 1] * (1 - transparencyCoefficient));
 
-				originalBmp->m_pData[resultIndex + 2] = (unsigned char)(originalBmp->m_pData[resultIndex + 2] * transparencyCoefficient +
-																		logoBmp->m_pData[logoIndex + 2] * (1 - transparencyCoefficient));
+				originalBmp->m_pData[resultIndex + 2] = (unsigned char)(logoBmp->m_pData[logoIndex + 2] * transparencyCoefficient +
+																		originalBmp->m_pData[resultIndex + 2] * (1 - transparencyCoefficient));
 			}
         }
     }
