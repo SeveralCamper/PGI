@@ -2,6 +2,8 @@ from PIL import Image
 import numpy as np
 from sklearn.cluster import KMeans
 
+# 4. Преобразовать True Color PCX файл в 256-цветный PCX файл.
+
 def main() -> int:
     image = Image.open('сarib_TC.pcx')
     image.show()
